@@ -1,0 +1,11 @@
+main: de.nevermined.bungeeqbukkit.BungeeQBukkitPlugin
+
+name: ${project.name}
+version: ${project.version}
+author: NeverminedDE
+authors: [King_Morris]
+
+website: https://nevermined.de
+
+load: STARTUP
+database: false

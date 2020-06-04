@@ -1,0 +1,10 @@
+main: de.nevermined.bungeeqbungee.BungeeQBungeePlugin
+
+name: ${project.name}
+version: ${project.version}
+author: NeverminedDE
+authors: [King_Morris]
+
+website: https://nevermined.de
+
+database: true
