@@ -22,33 +22,13 @@
  *  SOFTWARE.
  */
 
-package de.nevermined.bungeeqbungee.util;
+package de.nevermined.bungeeqbungee.exception;
 
-import lombok.Getter;
+import de.nevermined.bungeeqbungee.util.Message;
 
-public enum PermissionHelper {
+public class NotMoveableException extends BungeeQException {
 
-  COMMAND_Q_GET("bungeeq.command.qget"),
-  COMMAND_Q_ASK("bungeeq.command.qask"),
-  COMMAND_Q_REPEAT("bungeeq.command.qrepeat"),
-  COMMAND_Q_CHAT("bungeeq.command.qchat"),
-  COMMAND_Q_EXIT("bungeeq.command.qexit"),
-  COMMAND_Q_DECLINE("bungeeq.command.qdecline"),
-  COMMAND_Q_UNLOCK("bungeeq.command.qunlock"),
-  COMMAND_Q_HISTORY("bungeeq.command.qhistory"),
-  COMMAND_Q_WATCH("bungeeq.command.qwatch"),
-  COMMAND_Q_LIST("bungeeq.command.qlist"),
-  COMMAND_Q_MOVE("bungeeq.command.qmove"),
-  COMMAND_Q_SOLUTION("bungeeq.command.qsolution"),
-  COMMAND_ACTIVATE("bungeeq.command.activate"),
-  COMMAND_EXIT("bungeeq.command.exit"),
-  COMMAND_BUNGEE_Q("bungeeq.command.bungeeq"),
-  INFORMABLE("bungeeq.informable");
-
-  @Getter
-  private String permission;
-
-  PermissionHelper(String permission) {
-    this.permission = permission;
+  public NotMoveableException() {
+    super(Message.THIS_CAN_NOT_MOVE);
   }
 }

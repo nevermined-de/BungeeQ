@@ -24,19 +24,17 @@
 
 package de.nevermined.bungeeqbungee.command;
 
-import com.google.common.collect.ImmutableList;
+import de.nevermined.bungeeqbungee.exception.AlreadyUnlockingPlayerException;
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
-import de.nevermined.bungeeqbungee.exception.NotWatchableException;
-import de.nevermined.bungeeqbungee.exception.NotWatchingException;
+import de.nevermined.bungeeqbungee.exception.NotMoveableException;
+import de.nevermined.bungeeqbungee.object.TwoKeyMap;
 import de.nevermined.bungeeqbungee.object.UnlockSession;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
 import de.nevermined.bungeeqbungee.util.PlayerHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -44,55 +42,48 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Getter
-public class QWatchCommand extends AbstractPlayerCommand {
+public class QMoveCommand extends AbstractPlayerCommand {
 
-  private static String partCommand = "qwatch";
-  private static PermissionHelper partPermission = PermissionHelper.COMMAND_Q_WATCH;
-  private static String[] aliases = {"qw"};
-  private Message infoMessage = Message.COMMAND_Q_WATCH_USE;
-  private Predicate<Integer> argsNeededLength = (l -> l == 0 || l == 1);
+  private static String partCommand = "qmove";
+  private static PermissionHelper partPermission = PermissionHelper.COMMAND_Q_MOVE;
+  private static String[] aliases = {"qm"};
+  private Message infoMessage = Message.COMMAND_Q_MOVE_USE;
+  private Predicate<Integer> argsNeededLength = (l -> l == 1);
 
-  public QWatchCommand() {
+  public QMoveCommand() {
     super(partCommand, partPermission, aliases);
   }
 
   @Override
   public void onCommand(ProxiedPlayer sender, String[] args) throws BungeeQException {
-    if (args.length == 0) {
-      leaveWatch(sender);
-    } else {
-      String userName = args[0];
-      joinWatch(userName, sender);
-    }
-  }
+    UnlockManager unlockManager = UnlockManager.getInstance();
+    UnlockSession unlockSession = unlockManager.getUnlockByUnlocker(sender.getUniqueId());
 
-  private void joinWatch(String userName, ProxiedPlayer player) throws NotWatchableException {
+    if (unlockSession != null) {
+      String userName = unlockSession.getTargetName();
+
+      throw new AlreadyUnlockingPlayerException(userName);
+    }
+
+    String userName = args[0];
     UUID userUuid = PlayerHelper.getUUIDFromPlayerName(userName);
 
     if (userUuid == null) {
-      throw new NotWatchableException();
+      throw new NotMoveableException();
     }
 
-    UnlockSession unlockSession = UnlockManager.getInstance().getUnlockByTarget(userUuid);
+    UnlockSession session = unlockManager.getUnlockByTarget(userUuid);
 
-    if (unlockSession == null) {
-      throw new NotWatchableException();
+    if (session == null) {
+      throw new NotMoveableException();
     }
 
-    unlockSession.addWatcher(player.getUniqueId());
+    TwoKeyMap<UUID, UUID, UnlockSession> runningUnlocks = unlockManager.getRunningUnlocks();
+    UUID targetUuid = session.getTargetUuid();
+    runningUnlocks.removeByKey1(targetUuid);
 
-    player.sendMessage(Message.YOU_ARE_WATCHING.getOutputComponent());
-  }
-
-  private void leaveWatch(ProxiedPlayer player) throws NotWatchingException {
-    UnlockSession unlockSession = UnlockManager.getInstance().getUnlockByWatcher(player.getUniqueId());
-
-    if (unlockSession == null) {
-      throw new NotWatchingException();
-    }
-
-    unlockSession.removeWatcher(player.getUniqueId());
-    player.sendMessage(Message.YOU_WATCH_NOT_MORE.getOutputComponent());
+    session.setUnlocker(sender.getUniqueId());
+    runningUnlocks.put(targetUuid, sender.getUniqueId(), session);
   }
 
   @NotNull

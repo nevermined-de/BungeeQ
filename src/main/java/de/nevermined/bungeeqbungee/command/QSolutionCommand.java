@@ -25,11 +25,15 @@
 package de.nevermined.bungeeqbungee.command;
 
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
-import de.nevermined.bungeeqbungee.exception.NotImplementedException;
+import de.nevermined.bungeeqbungee.exception.NotUnlockingException;
+import de.nevermined.bungeeqbungee.exception.PlayerMessageNotFoundException;
+import de.nevermined.bungeeqbungee.object.UnlockSession;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
+import de.nevermined.bungeeqbungee.util.UnlockManager;
 import java.util.function.Predicate;
 import lombok.Getter;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +45,7 @@ public class QSolutionCommand extends AbstractPlayerCommand {
   private static PermissionHelper partPermission = PermissionHelper.COMMAND_Q_SOLUTION;
   private static String[] aliases = {"qs"};
   private Message infoMessage;
-  private Predicate<Integer> argsNeededLength = null;
+  private Predicate<Integer> argsNeededLength = (l -> l == 0);
 
   public QSolutionCommand() {
     super(partCommand, partPermission, aliases);
@@ -49,7 +53,20 @@ public class QSolutionCommand extends AbstractPlayerCommand {
 
   @Override
   public void onCommand(ProxiedPlayer sender, String[] args) throws BungeeQException {
-    throw new NotImplementedException(); //TODO
+    UnlockSession unlock = UnlockManager.getInstance()
+        .getUnlockByUnlocker(sender.getUniqueId());
+
+    if (unlock == null) {
+      throw new NotUnlockingException();
+    }
+
+    TextComponent solution = unlock.getLastTargetMessage();
+
+    if (solution == null) {
+      throw new PlayerMessageNotFoundException();
+    }
+
+    sender.sendMessage(solution);
   }
 
   @NotNull

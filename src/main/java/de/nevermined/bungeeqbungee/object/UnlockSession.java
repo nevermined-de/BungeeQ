@@ -29,6 +29,7 @@ import de.nevermined.bungeeqbungee.database.table.BqLogs;
 import de.nevermined.bungeeqbungee.database.table.BqUnlocks;
 import de.nevermined.bungeeqbungee.exception.QuestionsLeftException;
 import de.nevermined.bungeeqbungee.util.Message;
+import de.nevermined.bungeeqbungee.util.MessageColorUtils;
 import de.nevermined.bungeeqbungee.util.PlayerHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
 import java.time.LocalDateTime;
@@ -66,21 +67,16 @@ public class UnlockSession {
   @Setter
   private String notice = "";
   private List<String> messageLog = new ArrayList<>();
+  @Setter
+  private TextComponent lastTargetMessage;
 
   public UnlockSession(UUID targetUuid, UUID unlockerUuid) {
     this.targetUuid = targetUuid;
-    this.unlockerUuid = unlockerUuid;
-    this.targetName = ProxyServer.getInstance().getPlayer(targetUuid).getName();
-    this.unlockerName = ProxyServer.getInstance().getPlayer(unlockerUuid).getName();
+    this.targetName = PlayerHelper.getPlayerNameFromUUID(targetUuid);
+    setUnlocker(unlockerUuid);
     this.status = UnlockStatus.RUNNING;
     this.start = LocalDateTime.now();
     this.questions = new Questions();
-
-    UnlockManager.getInstance()
-        .sendUnlockerMessage(Message.UNLOCKER_GET_PLAYER.getOutputComponent(
-            PlayerHelper.getPlayerNameFromUUID(unlockerUuid),
-            PlayerHelper.getPlayerNameFromUUID(targetUuid)
-        ), true);
   }
 
   public void sendMessage(TextComponent message) {
@@ -97,8 +93,8 @@ public class UnlockSession {
   private Set<@Nullable ProxiedPlayer> getReceivers() {
     Set<ProxiedPlayer> receivers = new HashSet<>();
 
-    receivers.add(ProxyServer.getInstance().getPlayer(unlockerUuid));
-    receivers.add(ProxyServer.getInstance().getPlayer(targetUuid));
+    receivers.add(PlayerHelper.getPlayerFromUUID(unlockerUuid));
+    receivers.add(PlayerHelper.getPlayerFromUUID(targetUuid));
 
     this.watchers
         .stream()
@@ -208,4 +204,31 @@ public class UnlockSession {
   public void removeWatcher(UUID watcher) {
     this.watchers.remove(watcher);
   }
+
+  public void setUnlocker(UUID unlockerUuid) {
+    ProxiedPlayer unlocker = PlayerHelper.getPlayerFromUUID(unlockerUuid);
+    ProxiedPlayer targetPlayer = PlayerHelper.getPlayerFromUUID(this.getTargetUuid());
+
+    this.unlockerUuid = unlockerUuid;
+    this.unlockerName = unlocker.getName();
+
+    unlocker.sendMessage(Message.YOU_UNLOCK_SOMEBODY.getOutputComponent());
+    unlocker.sendMessage(getModsInfoMessage(targetPlayer.getModList()));
+
+    UnlockManager.getInstance()
+        .sendUnlockerMessage(Message.UNLOCKER_GET_PLAYER.getOutputComponent(
+            unlockerName,
+            targetName
+        ), true);
+  }
+
+  public TextComponent getModsInfoMessage(Map<String, String> modMap) {
+    String modList = modMap.entrySet().stream()
+        .map(entry -> Message.MOD_LIST_ENTRY.getOutputString(entry.getKey(), entry.getValue()))
+        .collect(Collectors.joining(Message.MOD_LIST_SEPARATOR.getOutputString()));
+
+    TextComponent modListComponent = MessageColorUtils.convertTextComponent(modList);
+    return modListComponent;
+  }
+
 }

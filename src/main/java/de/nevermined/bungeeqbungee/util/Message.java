@@ -47,13 +47,16 @@ public enum Message {
   YOU_WATCH_NOBODY(OUTPUT_PREFIX, ChatColor.AQUA + "Du beobachtest zurzeit keine Freischaltung!"),
   YOU_WATCH_NOT_MORE(OUTPUT_PREFIX, ChatColor.AQUA + "Du beobachtest die Freischaltung nicht mehr!"),
   THIS_CAN_NOT_WATCH(OUTPUT_PREFIX, ChatColor.AQUA + "Diese Freischaltung kann nicht beobachtet werden!"),
+  THIS_CAN_NOT_MOVE(OUTPUT_PREFIX, ChatColor.AQUA + "Diese Freischaltung kann nicht übertragen werden!"),
   YOU_ARE_WATCHING(OUTPUT_PREFIX, ChatColor.AQUA + "Du beobachtest nun die Freischaltung!"),
+  PLAYER_MESSAGE_NOT_FOUND(OUTPUT_PREFIX, ChatColor.AQUA + "Der Spieler hat noch keine Nachricht geschrieben"),
 
   COMMAND_BUNGEE_Q_USE("%COMMAND% <reload|update>", "%COMMAND%"),
   COMMAND_Q_CHAT_USE("%COMMAND% <Nachricht ...>", "%COMMAND%"),
   COMMAND_Q_DECLINE_USE("%COMMAND% <Notiz ...>", "%COMMAND%"),
-  COMMAND_Q_EXIT_USE("%COMMAND% [<Notiz ...>]", "%COMMAND%"),
+  COMMAND_Q_EXIT_USE("%COMMAND% <Notiz ...>", "%COMMAND%"),
   COMMAND_Q_HISTORY_USE("%COMMAND% <Spieler>", "%COMMAND%"),
+  COMMAND_Q_MOVE_USE("%COMMAND% <Spieler>", "%COMMAND%"),
   COMMAND_Q_UNLOCK_USE("%COMMAND% <Notiz ...>", "%COMMAND%"),
   COMMAND_Q_WATCH_USE("%COMMAND% [Spieler]", "%COMMAND%"),
 

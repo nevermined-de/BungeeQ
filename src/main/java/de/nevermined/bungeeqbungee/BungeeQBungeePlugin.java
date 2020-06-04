@@ -34,6 +34,7 @@ import de.nevermined.bungeeqbungee.command.QExitCommand;
 import de.nevermined.bungeeqbungee.command.QGetCommand;
 import de.nevermined.bungeeqbungee.command.QHistoryCommand;
 import de.nevermined.bungeeqbungee.command.QListCommand;
+import de.nevermined.bungeeqbungee.command.QMoveCommand;
 import de.nevermined.bungeeqbungee.command.QRepeatCommand;
 import de.nevermined.bungeeqbungee.command.QSolutionCommand;
 import de.nevermined.bungeeqbungee.command.QUnlockCommand;
@@ -89,6 +90,7 @@ public class BungeeQBungeePlugin extends Plugin {
     pm.registerCommand(this, new QGetCommand());
     pm.registerCommand(this, new QHistoryCommand());
     pm.registerCommand(this, new QListCommand());
+    pm.registerCommand(this, new QMoveCommand());
     pm.registerCommand(this, new QRepeatCommand());
     pm.registerCommand(this, new QSolutionCommand());
     pm.registerCommand(this, new QUnlockCommand());

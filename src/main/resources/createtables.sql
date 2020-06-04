@@ -25,7 +25,7 @@
 -- -----------------------------------------------------
 -- Table `bq_unlocks`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bq_unlocks`
+CREATE TABLE IF NOT EXISTS bq_unlocks
 (
     id             int                                                     NOT NULL AUTO_INCREMENT,
     target_uuid    char(36)                                                NOT NULL,
@@ -46,5 +46,5 @@ CREATE TABLE IF NOT EXISTS `bq_logs`
     unlock_id int NOT NULL,
     log       text,
     PRIMARY KEY (unlock_id),
-    FOREIGN KEY (unlock_id) REFERENCES `bq_unlocks` (id) ON DELETE CASCADE
+    FOREIGN KEY (unlock_id) REFERENCES bq_unlocks (id) ON DELETE CASCADE
 );
