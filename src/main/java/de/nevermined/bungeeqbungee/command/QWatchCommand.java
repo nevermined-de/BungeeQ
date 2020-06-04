@@ -24,7 +24,6 @@
 
 package de.nevermined.bungeeqbungee.command;
 
-import com.google.common.collect.ImmutableList;
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
 import de.nevermined.bungeeqbungee.exception.NotWatchableException;
 import de.nevermined.bungeeqbungee.exception.NotWatchingException;
@@ -33,10 +32,8 @@ import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
 import de.nevermined.bungeeqbungee.util.PlayerHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS bq_unlocks
 -- -----------------------------------------------------
 -- Table `bq_logs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bq_logs`
+CREATE TABLE IF NOT EXISTS bq_logs
 (
     unlock_id int NOT NULL,
     log       text,
