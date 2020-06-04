@@ -28,6 +28,7 @@ import de.nevermined.bungeeqbungee.command.ExitCommand;
 import de.nevermined.bungeeqbungee.object.UnlockSession;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -46,16 +47,15 @@ public class ChatListener implements Listener {
           .getUnlockByTarget(player.getUniqueId());
 
       if (unlockSession != null) {
-        event.setCancelled(true);
-
         String message = event.getMessage();
 
-        if (("/" + ExitCommand.getStaticPartCommand()).equalsIgnoreCase(message)) {
-          unlockSession.setNotice(Message.BREAK_BY_GUEST.getOutputString());
-          unlockSession.cancel(false);
-        } else {
-          unlockSession.sendMessage(
-              Message.PLAYER_MESSAGE.getOutputComponent(player.getName(), message));
+        if (!("/" + ExitCommand.getStaticPartCommand()).equalsIgnoreCase(message)) {
+          event.setCancelled(true);
+
+          TextComponent messageComponent =
+              Message.PLAYER_MESSAGE.getOutputComponent(player.getName(), message);
+          unlockSession.setLastTargetMessage(messageComponent);
+          unlockSession.sendMessage(messageComponent);
         }
       }
     }

@@ -24,6 +24,7 @@
 
 package de.nevermined.bungeeqbungee.util;
 
+import com.google.common.collect.ImmutableList;
 import de.nevermined.bungeeqbungee.config.ConfigManager;
 import de.nevermined.bungeeqbungee.exception.AlreadyInUnlockQueueException;
 import de.nevermined.bungeeqbungee.exception.AlreadyInUnlockSessionException;
@@ -32,10 +33,12 @@ import de.nevermined.bungeeqbungee.object.TwoKeyMap;
 import de.nevermined.bungeeqbungee.object.UnlockSession;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -96,7 +99,7 @@ public class UnlockManager {
 
   public void sendUnlockerMessage(TextComponent message, boolean sendSound) {
     this.availableUnlockers.stream()
-        .map(unlockerUuid -> ProxyServer.getInstance().getPlayer(unlockerUuid))
+        .map(PlayerHelper::getPlayerFromUUID)
         .filter(Objects::nonNull)
         .forEach(unlocker ->
         {
@@ -150,5 +153,26 @@ public class UnlockManager {
       instance = new UnlockManager();
     }
     return instance;
+  }
+
+  public List<String> getAllTargetNames() {
+    List<String> names = this.getRunningUnlocks().values().stream()
+        .map(UnlockSession::getTargetUuid)
+        .map(PlayerHelper::getPlayerNameFromUUID)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+    return names;
+  }
+
+  public Iterable<String> getTargetNamesTabComplete(String[] args) {
+    Iterable<String> tabComplete;
+    if (args.length <= 1) {
+      tabComplete = this.getAllTargetNames().stream()
+          .filter(s -> args.length != 1 || s.startsWith(args[0]))
+          .collect(Collectors.toList());
+    } else {
+      tabComplete = ImmutableList.of();
+    }
+    return tabComplete;
   }
 }

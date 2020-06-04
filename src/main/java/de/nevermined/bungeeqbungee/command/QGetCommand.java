@@ -28,15 +28,11 @@ import de.nevermined.bungeeqbungee.exception.AlreadyUnlockingPlayerException;
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
 import de.nevermined.bungeeqbungee.object.UnlockSession;
 import de.nevermined.bungeeqbungee.util.Message;
-import de.nevermined.bungeeqbungee.util.MessageColorUtils;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
 import de.nevermined.bungeeqbungee.util.PlayerHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
-import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import lombok.Getter;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,34 +56,19 @@ public class QGetCommand extends AbstractPlayerCommand {
     UnlockSession unlockSession = unlockManager.getUnlockByUnlocker(sender.getUniqueId());
 
     if (unlockSession != null) {
-      String userName = PlayerHelper.getPlayerNameFromUUID(unlockSession.getTargetUuid());
+      String userName = unlockSession.getTargetName();
 
       throw new AlreadyUnlockingPlayerException(userName);
     }
 
     unlockManager.unqueuePlayer(sender.getUniqueId());
 
-    sender.sendMessage(Message.YOU_UNLOCK_SOMEBODY.getOutputComponent());
-
     UnlockSession session = unlockManager.getUnlockByUnlocker(sender.getUniqueId());
-
-    ProxiedPlayer targetPlayer = PlayerHelper.getPlayerFromUUID(session.getTargetUuid());
-
-    sender.sendMessage(getModsInfoMessage(targetPlayer.getModList()));
 
     String question = session.getQuestions().getNext();
 
     session.sendMessage(
         Message.PLAYER_MESSAGE.getOutputComponent(sender.getName(), question));
-  }
-
-  public TextComponent getModsInfoMessage(Map<String, String> modMap) {
-    String modList = modMap.entrySet().stream()
-        .map(entry -> Message.MOD_LIST_ENTRY.getOutputString(entry.getKey(), entry.getValue()))
-        .collect(Collectors.joining(Message.MOD_LIST_SEPARATOR.getOutputString()));
-
-    TextComponent modListComponent = MessageColorUtils.convertTextComponent(modList);
-    return modListComponent;
   }
 
   @NotNull

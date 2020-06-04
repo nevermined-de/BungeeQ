@@ -115,9 +115,10 @@ public class BqUnlocks {
           "SELECT LAST_INSERT_ID() AS id;"
       );
       rs = ps.executeQuery();
-      rs.next();
-      this.id = rs.getInt("id");
-      success = true;
+      if (rs.next()) {
+        this.id = rs.getInt("id");
+        success = true;
+      }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, "Error: ", e);
     } finally {

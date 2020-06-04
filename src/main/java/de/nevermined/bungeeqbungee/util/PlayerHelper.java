@@ -53,10 +53,16 @@ public class PlayerHelper {
   public static String getPlayerNameFromUUID(UUID uuid) {
     String result = null;
 
-    try {
-      result = LuckPermsProvider.get().getUserManager().lookupUsername(uuid).get();
-    } catch (InterruptedException | ExecutionException ex) {
-      LOGGER.log(Level.SEVERE, "Error: ", ex);
+    ProxiedPlayer player = getPlayerFromUUID(uuid);
+
+    if (player == null) {
+      try {
+        result = LuckPermsProvider.get().getUserManager().lookupUsername(uuid).get();
+      } catch (InterruptedException | ExecutionException ex) {
+        LOGGER.log(Level.SEVERE, "Error: ", ex);
+      }
+    } else {
+      return player.getName();
     }
 
     return result;
