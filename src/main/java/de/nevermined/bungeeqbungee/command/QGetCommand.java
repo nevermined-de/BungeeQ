@@ -29,7 +29,6 @@ import de.nevermined.bungeeqbungee.exception.BungeeQException;
 import de.nevermined.bungeeqbungee.object.UnlockSession;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
-import de.nevermined.bungeeqbungee.util.PlayerHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
 import java.util.function.Predicate;
 import lombok.Getter;
