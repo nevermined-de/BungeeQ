@@ -61,6 +61,7 @@ public class ConfigManager {
   private String unlockGroup;
   private boolean sendGlobalMessage;
   private String informationSound;
+  private int timeToAutoResponse;
 
   private ConfigManager() {
     instance = this;
@@ -132,5 +133,6 @@ public class ConfigManager {
     this.unlockGroup = configuration.getString("general.unlock_group");
     this.sendGlobalMessage = configuration.getBoolean("general.send_global_message");
     this.informationSound = configuration.getString("general.information_sound");
+    this.timeToAutoResponse = configuration.getInt("general.time_to_auto_response");
   }
 }

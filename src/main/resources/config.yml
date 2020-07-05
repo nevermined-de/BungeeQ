@@ -31,3 +31,4 @@ general:
   unlock_group: 'player'
   send_global_message: true
   information_sound: "BLOCK_BELL_USE"
+  time_to_auto_response: 30 #in seconds
