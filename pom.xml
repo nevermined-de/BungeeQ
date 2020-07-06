@@ -44,14 +44,6 @@
       <id>sonatype-oss-repo</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </repository>
-    <repository>
-      <id>nevermined-snapshot-repository</id>
-      <url>http://nexus.nevermined.de/repository/group-public-snapshot/</url>
-    </repository>
-    <repository>
-      <id>nevermined-release-repository</id>
-      <url>http://nexus.nevermined.de/repository/group-public-release/</url>
-    </repository>
   </repositories>
 
   <dependencies>
