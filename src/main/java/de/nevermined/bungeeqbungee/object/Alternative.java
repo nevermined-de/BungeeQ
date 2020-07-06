@@ -24,48 +24,28 @@
 
 package de.nevermined.bungeeqbungee.object;
 
-import de.nevermined.bungeeqbungee.BungeeQBungeePlugin;
-import de.nevermined.bungeeqbungee.config.ConfigManager;
-import de.nevermined.bungeeqbungee.util.PlayerHelper;
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import de.nevermined.bungeeqbungee.api.BungeeQAlternative;
+import java.util.HashMap;
 import lombok.Getter;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class UnlockQueueEntry {
+@Getter
+public class Alternative {
 
   @Getter
-  private long entryTime;
-  @Getter
-  private UUID player;
-  private ScheduledTask afkTimer;
+  private static HashMap<String, Alternative> alternatives = new HashMap<>();
+  private Plugin plugin;
+  private BungeeQAlternative alternative;
+  private TextComponent infoText;
 
-  public UnlockQueueEntry(UUID player) {
-    this.player = player;
-    entryTime = System.currentTimeMillis();
-    afkTimer = BungeeQBungeePlugin.getInstance().getProxy().getScheduler()
-        .schedule(
-            BungeeQBungeePlugin.getInstance(),
-            this::afkTrigger,
-            ConfigManager.getInstance().getTimeToAutoResponse(),
-            TimeUnit.SECONDS
-        );
-  }
-
-  protected void polled() {
-    this.afkTimer.cancel();
-  }
-
-  private void afkTrigger() {
-    ProxiedPlayer pPlayer = PlayerHelper.getPlayerFromUUID(this.player);
-
-    for (Entry<String, Alternative> entry : Alternative.getAlternatives().entrySet()) {
-      TextComponent tempComponent = entry.getValue().getInfoText();
-      //TODO Add ClickListener
-      pPlayer.sendMessage(tempComponent);
-    }
+  public Alternative(
+      Plugin plugin,
+      BungeeQAlternative alternative,
+      TextComponent infoText) {
+    this.plugin = plugin;
+    this.alternative = alternative;
+    this.infoText = infoText;
+    alternatives.put(plugin.getDescription().getName(), this);
   }
 }
