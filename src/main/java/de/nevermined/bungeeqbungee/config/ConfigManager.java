@@ -74,7 +74,7 @@ public class ConfigManager {
 
   public static ConfigManager getInstance() {
     if (instance == null) {
-      return new ConfigManager();
+      return new ConfigManager(); //TODO make it ro SESE
     }
     return instance;
   }

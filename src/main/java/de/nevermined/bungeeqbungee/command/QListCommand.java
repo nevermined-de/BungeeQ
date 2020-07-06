@@ -25,6 +25,7 @@
 package de.nevermined.bungeeqbungee.command;
 
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
+import de.nevermined.bungeeqbungee.object.UnlockQueueEntry;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
 import de.nevermined.bungeeqbungee.util.PlayerHelper;
@@ -57,6 +58,7 @@ public class QListCommand extends AbstractPlayerCommand {
     String queuePlayerList = UnlockManager.getInstance()
         .getUnlockQueue()
         .stream()
+        .map(UnlockQueueEntry::getPlayer)
         .map(PlayerHelper::getPlayerNameFromUUID)
         .collect(Collectors.joining(Message.LIST_QUEUE_SEPARATOR.getOutputString()));
 

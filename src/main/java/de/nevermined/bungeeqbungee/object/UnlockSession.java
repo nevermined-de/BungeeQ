@@ -230,5 +230,4 @@ public class UnlockSession {
     TextComponent modListComponent = MessageColorUtils.convertTextComponent(modList);
     return modListComponent;
   }
-
 }

@@ -62,7 +62,7 @@ public class PlayerHelper {
         LOGGER.log(Level.SEVERE, "Error: ", ex);
       }
     } else {
-      return player.getName();
+      return player.getName(); //TODO make it ro SESE
     }
 
     return result;

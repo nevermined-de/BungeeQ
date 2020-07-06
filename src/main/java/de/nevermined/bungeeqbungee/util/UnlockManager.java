@@ -30,12 +30,11 @@ import de.nevermined.bungeeqbungee.exception.AlreadyInUnlockQueueException;
 import de.nevermined.bungeeqbungee.exception.AlreadyInUnlockSessionException;
 import de.nevermined.bungeeqbungee.exception.QueueEmptyException;
 import de.nevermined.bungeeqbungee.object.TwoKeyMap;
+import de.nevermined.bungeeqbungee.object.UnlockQueue;
 import de.nevermined.bungeeqbungee.object.UnlockSession;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class UnlockManager {
   private static UnlockManager instance = null;
   private Set<UUID> availableUnlockers = new HashSet<>();
   @Getter
-  private Queue<UUID> unlockQueue = new LinkedList<>();
+  private UnlockQueue unlockQueue = new UnlockQueue();
   @Getter
   private TwoKeyMap<UUID, UUID, UnlockSession> runningUnlocks = new TwoKeyMap<>();
 
@@ -65,11 +64,11 @@ public class UnlockManager {
       throw new AlreadyInUnlockSessionException();
     }
 
-    if (this.unlockQueue.contains(target)) {
+    if (this.unlockQueue.containsPlayer(target)) {
       throw new AlreadyInUnlockQueueException();
     }
 
-    this.unlockQueue.add(target);
+    this.unlockQueue.addPlayer(target);
 
     String userName = ProxyServer
         .getInstance()
@@ -86,7 +85,7 @@ public class UnlockManager {
       throw new QueueEmptyException();
     }
 
-    UUID target = this.unlockQueue.poll();
+    UUID target = this.unlockQueue.poll().getPlayer();
 
     startUnlock(target, unlocker);
 
@@ -145,7 +144,7 @@ public class UnlockManager {
   }
 
   public void removePlayerFromQueue(UUID player) {
-    this.unlockQueue.remove(player);
+    this.unlockQueue.removePlayer(player);
   }
 
   public static UnlockManager getInstance() {
