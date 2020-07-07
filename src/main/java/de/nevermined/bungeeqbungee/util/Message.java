@@ -77,7 +77,7 @@ public enum Message {
   BREAK_BY_PERSON(OUTPUT_PREFIX, ChatColor.AQUA + "Die Freischaltung von %USER% wurde von %BREAKER% abgebrochen", "%USER%", "%BREAKER%"),
   UNLOCKER_GET_PLAYER(OUTPUT_PREFIX, ChatColor.AQUA + "%UNLOCKER% schaltet nun %USER% frei.", "%UNLOCKER%", "%USER%"),
   QUEUE_HAS_USERS(OUTPUT_PREFIX, ChatColor.AQUA + "Es sind noch %COUNT%  Gäste in der Warteschlange", "%DECLINER%"),
-  UNLOCK_DELINE(OUTPUT_PREFIX, ChatColor.AQUA + "Die Freischaltung wurde abgelehnt!"),
+  UNLOCK_DECLINE(OUTPUT_PREFIX, ChatColor.AQUA + "Die Freischaltung wurde abgelehnt!"),
   DECLINED_MESSAGE(OUTPUT_PREFIX, ChatColor.AQUA + "Die Freischaltung von %DECLINER% wurde von %DECLINED% abgelehnt!", "%DECLINER%", "%DECLINED%"),
   UNLOCK_CANCELLED("Die Freischaltung wurde abgebrochen!"),
   QUESTIONS_LEFT(OUTPUT_PREFIX, ChatColor.AQUA + "Du musst zuerst alle Fragen stellen!"),
@@ -101,7 +101,9 @@ public enum Message {
   PLAYER_MESSAGE(OUTPUT_PREFIX, ChatColor.GRAY + "%SENDER%" + ChatColor.DARK_AQUA + ": " + ChatColor.AQUA + "%MESSAGE%", "%SENDER%", "%MESSAGE%"),
   PLUGIN_MESSAGE(OUTPUT_PREFIX, ChatColor.GRAY + "BungeeQ" + ChatColor.DARK_AQUA + ": " + ChatColor.AQUA + "%MESSAGE%", "%MESSAGE%"),
 
-  GLOBAL_MESSAGE(ChatColor.YELLOW + "Willkommen auf dem Server, " + ChatColor.GRAY + "%USER%" + ChatColor.YELLOW + "!", "%USER%");
+  GLOBAL_MESSAGE(ChatColor.YELLOW + "Willkommen auf dem Server, " + ChatColor.GRAY + "%USER%" + ChatColor.YELLOW + "!", "%USER%"),
+
+  ALTERNATIVE_TITLE("Es scheint kein Freischalter verfügbar zu sein. Hier hast du Alternativen:");
 
   private String[] variables;
   private String output;

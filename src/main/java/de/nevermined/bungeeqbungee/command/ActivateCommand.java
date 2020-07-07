@@ -25,6 +25,8 @@
 package de.nevermined.bungeeqbungee.command;
 
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
+import de.nevermined.bungeeqbungee.exception.WrongInputException;
+import de.nevermined.bungeeqbungee.object.Alternative;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
@@ -41,7 +43,7 @@ public class ActivateCommand extends AbstractPlayerCommand {
   private static PermissionHelper partPermission = PermissionHelper.COMMAND_ACTIVATE;
   private static String[] aliases = {"activate"};
   private Message infoMessage;
-  private Predicate<Integer> argsNeededLength = (l -> l == 0);
+  private Predicate<Integer> argsNeededLength = (l -> l == 0 || l == 1);
 
   public ActivateCommand() {
     super(partCommand, partPermission, aliases);
@@ -49,10 +51,16 @@ public class ActivateCommand extends AbstractPlayerCommand {
 
   @Override
   public void onCommand(ProxiedPlayer sender, String[] args) throws BungeeQException {
-    UnlockManager.getInstance()
-        .queuePlayer(sender.getUniqueId());
+    if (args.length == 0) {
+      UnlockManager.getInstance()
+          .queuePlayer(sender.getUniqueId());
 
-    sender.sendMessage(Message.JOIN_IN_UNLOCK_QUEUE.getOutputComponent());
+      sender.sendMessage(Message.JOIN_IN_UNLOCK_QUEUE.getOutputComponent());
+    } else if (Alternative.getAlternatives().containsKey(args[0])) {
+      Alternative.getAlternatives().get(args[0]).getAlternative().onTrigger(sender.getUniqueId());
+    } else {
+      throw new WrongInputException(this);
+    }
   }
 
   @NotNull

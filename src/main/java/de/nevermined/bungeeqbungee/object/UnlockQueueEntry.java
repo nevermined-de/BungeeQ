@@ -26,14 +26,16 @@ package de.nevermined.bungeeqbungee.object;
 
 import de.nevermined.bungeeqbungee.BungeeQBungeePlugin;
 import de.nevermined.bungeeqbungee.config.ConfigManager;
+import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PlayerHelper;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class UnlockQueueEntry {
 
@@ -60,12 +62,19 @@ public class UnlockQueueEntry {
   }
 
   private void afkTrigger() {
-    ProxiedPlayer pPlayer = PlayerHelper.getPlayerFromUUID(this.player);
+    if (Alternative.getAlternatives().size() > 0) {
+      ProxiedPlayer pPlayer = PlayerHelper.getPlayerFromUUID(this.player);
 
-    for (Entry<String, Alternative> entry : Alternative.getAlternatives().entrySet()) {
-      TextComponent tempComponent = entry.getValue().getInfoText();
-      //TODO Add ClickListener
-      pPlayer.sendMessage(tempComponent);
+      pPlayer.sendMessage(
+          Message.PLUGIN_MESSAGE.getOutputComponent(
+              Message.ALTERNATIVE_TITLE.getOutputString()));
+
+      for (Entry<String, Alternative> entry : Alternative.getAlternatives().entrySet()) {
+        TextComponent tempComponent = entry.getValue().getInfoText();
+        String command = "/activate " + entry.getKey();
+        tempComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+        pPlayer.sendMessage(tempComponent);
+      }
     }
   }
 }

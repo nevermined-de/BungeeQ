@@ -108,7 +108,7 @@ public class UnlockSession {
 
   public void decline() {
     this.sendMessage(
-        Message.PLUGIN_MESSAGE.getOutputComponent(Message.UNLOCK_DELINE.getOutputString())
+        Message.PLUGIN_MESSAGE.getOutputComponent(Message.UNLOCK_DECLINE.getOutputString())
     );
 
     UnlockManager
