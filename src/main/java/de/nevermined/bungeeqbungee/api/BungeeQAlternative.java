@@ -28,5 +28,5 @@ import java.util.UUID;
 
 public interface BungeeQAlternative {
 
-  public void onTrigger(UUID player);
+  boolean onTrigger(UUID player);
 }

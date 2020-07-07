@@ -8,3 +8,4 @@ authors: [King_Morris]
 website: https://nevermined.de
 
 database: true
+depends: [LuckPerms]

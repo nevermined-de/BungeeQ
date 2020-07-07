@@ -25,8 +25,8 @@
 package de.nevermined.bungeeqbungee.api;
 
 import de.nevermined.bungeeqbungee.object.Alternative;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.plugin.Plugin;
 
 public class AlternativeRegister {
 

@@ -27,6 +27,7 @@ package de.nevermined.bungeeqbungee.command;
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
 import de.nevermined.bungeeqbungee.exception.WrongInputException;
 import de.nevermined.bungeeqbungee.object.Alternative;
+import de.nevermined.bungeeqbungee.object.UnlockQueue;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
@@ -57,7 +58,11 @@ public class ActivateCommand extends AbstractPlayerCommand {
 
       sender.sendMessage(Message.JOIN_IN_UNLOCK_QUEUE.getOutputComponent());
     } else if (Alternative.getAlternatives().containsKey(args[0])) {
-      Alternative.getAlternatives().get(args[0]).getAlternative().onTrigger(sender.getUniqueId());
+      boolean remove =
+          Alternative.getAlternatives().get(args[0]).getAlternative().onTrigger(sender.getUniqueId());
+      if (remove) {
+        UnlockManager.getInstance().getUnlockQueue().removePlayer(sender.getUniqueId());
+      }
     } else {
       throw new WrongInputException(this);
     }
