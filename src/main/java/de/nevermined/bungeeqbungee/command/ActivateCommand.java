@@ -27,7 +27,6 @@ package de.nevermined.bungeeqbungee.command;
 import de.nevermined.bungeeqbungee.exception.BungeeQException;
 import de.nevermined.bungeeqbungee.exception.WrongInputException;
 import de.nevermined.bungeeqbungee.object.Alternative;
-import de.nevermined.bungeeqbungee.object.UnlockQueue;
 import de.nevermined.bungeeqbungee.util.Message;
 import de.nevermined.bungeeqbungee.util.PermissionHelper;
 import de.nevermined.bungeeqbungee.util.UnlockManager;
