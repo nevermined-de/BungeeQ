@@ -25,7 +25,6 @@
 package de.nevermined.bungeeqbungee.util;
 
 import de.nevermined.bungeeqbungee.BungeeQBungeePlugin;
-import de.nevermined.bungeeqbungee.config.ConfigManager;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -91,11 +90,15 @@ public class PlayerHelper {
     assert user != null;
     user.data().clear();
 
-    Node n = Node.builder("group." + group).build();
+    Node node = Node.builder("group." + group).build();
+    user.data().add(node);
 
-    user.data().add(n);
+    user.setPrimaryGroup(group);
 
-    user.setPrimaryGroup(ConfigManager.getInstance().getUnlockGroup());
+    user.getNodes().stream()
+        .filter(n -> n.getKey().startsWith("group."))
+        .filter(n -> !n.getKey().equals("group." + group))
+        .forEach(n -> user.data().remove(n));
 
     userManager.saveUser(user);
 
