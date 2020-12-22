@@ -72,7 +72,7 @@ public enum Message {
   JOIN_IN_UNLOCK_QUEUE(OUTPUT_PREFIX, ChatColor.AQUA + "Du bist der Warteschlange beigetreten!"),
   PLAYER_JOINED_UNLOCK_QUEUE(OUTPUT_PREFIX, ChatColor.AQUA + "%USER% ist der Warteschlange beigetreten!", "%USER%"),
 
-  NO_MORE_QUESTIONS_LEFT(OUTPUT_PREFIX, ChatColor.AQUA + "Es keine weiteren Fragen verfügbar!"),
+  NO_MORE_QUESTIONS_LEFT(OUTPUT_PREFIX, ChatColor.AQUA + "Es sind keine weiteren Fragen verfügbar!"),
   BREAK_BY_GUEST("Abbrechen durch Gast"),
   BREAK_BY_PERSON(OUTPUT_PREFIX, ChatColor.AQUA + "Die Freischaltung von %USER% wurde von %BREAKER% abgebrochen", "%USER%", "%BREAKER%"),
   UNLOCKER_GET_PLAYER(OUTPUT_PREFIX, ChatColor.AQUA + "%UNLOCKER% schaltet nun %USER% frei.", "%UNLOCKER%", "%USER%"),
